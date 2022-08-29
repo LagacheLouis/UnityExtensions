@@ -1,0 +1,16 @@
+{
+    "name": "llagache.core.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a9639d2504a42b341953b256a3617d69"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
