@@ -50,53 +50,12 @@ namespace llagache.Editor
             EditorUtility.RevealInFinder(Application.persistentDataPath);
         }
 
-        
-        [MenuItem("GameObject/Group",false, -1)]
-        public static void Group(MenuCommand menuCommand)
-        {
-            if (!ShouldExecute(menuCommand)) return;
-            
-            Undo.SetCurrentGroupName("Group GameObjects");
-            int undo = Undo.GetCurrentGroup();
-            
-            Transform[] transforms = Selection.GetFiltered<Transform>(SelectionMode.TopLevel);
-            var group = new GameObject();
-            group.name = "Group";
-            group.transform.position = VectorExtensions.Center(transforms.Select(x => x.position).ToArray());
-
-            Transform parent = transforms[0].parent;
-            foreach (var transform in transforms)
-            {
-                if (transform.parent != parent) parent = null;
-            }
-            group.transform.parent = parent;
-            
-            Undo.RegisterCreatedObjectUndo(group, "Create Group");
-            foreach (var transform in transforms)
-            {
-                if (transform.parent != parent) parent = null;
-                Undo.SetTransformParent(transform, group.transform, "Set GameObjects Parent");
-            }
-            
-            Selection.objects = null;
-            Selection.activeGameObject = group;
-            
-            Undo.CollapseUndoOperations(undo);
-        }
-
-        [MenuItem("GameObject/Group", true, -1)]
-        public static bool GroupValidate()
-        {
-            return Selection.gameObjects.Length > 1;
-        }
-        
-        
-        [MenuItem("GameObject/Ungroup",false, -1)]
+        [MenuItem("GameObject/Unwrap",false, -1)]
         public static void Ungroup(MenuCommand menuCommand)
         {
             if (!ShouldExecute(menuCommand)) return;
             
-            Undo.SetCurrentGroupName("Group GameObjects");
+            Undo.SetCurrentGroupName("Unwrap");
             int undo = Undo.GetCurrentGroup();
             
             var group = Selection.gameObjects[0].transform;
@@ -115,7 +74,7 @@ namespace llagache.Editor
             Selection.objects = children.ToArray();
         }
 
-        [MenuItem("GameObject/Ungroup", true, -1)]
+        [MenuItem("GameObject/Unwrap", true, -1)]
         public static bool UngroupValidate()
         {
             return Selection.gameObjects.Length > 0 && Selection.gameObjects[0].transform.childCount > 0;
