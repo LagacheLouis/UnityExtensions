@@ -1,8 +1,8 @@
 {
-  "name": "llagache.core",
+  "name": "com.llagache.core",
   "version": "0.1.0",
   "displayName": "LL's Core",
-  "description": "A versatile voxel based level editor",
+  "description": "Louis Lagache's core extensions & helpers",
   "unity": "2019.4",
   "unityRelease": "0b5",
   "documentationUrl": "https://github.com/LagacheLouis/UnityExtensions",

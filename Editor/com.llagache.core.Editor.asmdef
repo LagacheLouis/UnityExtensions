@@ -1,7 +1,9 @@
 {
-    "name": "llagache.core",
+    "name": "com.llagache.core.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:a9639d2504a42b341953b256a3617d69"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
