@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace llagache.Editor
 {
@@ -17,11 +20,56 @@ namespace llagache.Editor
 #if UNITY_EDITOR_OSX
     [MenuItem("Shaker/Reveal in Finder")]
 #else
-        [MenuItem("Window/Show in Explorer")]
+        [MenuItem("Tools/QoL/Show in Explorer")]
 #endif
         static void OpenInFileExplorer()
         {
             EditorUtility.RevealInFinder(GetProjectPath());
+        }
+        
+        
+        [MenuItem("Tools/QoL/Open Terminal")]
+        static void OpenTerminal()
+        {
+
+            OpenTerminalFunc(GetProjectPath());
+        }
+        
+        [MenuItem("Assets/Open in Terminal")]
+        static void OpenAssetInTerminal()
+        {
+            var obj = Selection.activeObject;
+            var path = AssetDatabase.GetAssetPath(obj);
+            Debug.Log(path);
+            if(string.IsNullOrEmpty(path)) return;
+            var dir = Directory.Exists(path) ? path : Path.GetDirectoryName(path);
+            OpenTerminalFunc(dir);
+        }
+        
+        [MenuItem("Assets/Open in Terminal", true, -1)]
+        public static bool OpenAssetInTerminalValidate()
+        {
+            var obj = Selection.activeObject;
+            var path = AssetDatabase.GetAssetPath(obj);
+            return !string.IsNullOrEmpty(path);
+        }
+
+        private static void OpenTerminalFunc(string path)
+        {
+            var args = $"cd {path}";
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                var process = Process.Start("cmd.exe",$"/k {args}");
+                Debug.Log(args);
+            }
+            else if (Application.platform == RuntimePlatform.OSXEditor)
+            {
+                Process.Start(@"/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal", args);
+            }
+            else
+            {
+                Debug.LogWarning("Terminal shortcut is not supported on your plateform");
+            }
         }
         
         public static T GetSerializedValue<T>(this PropertyDrawer propertyDrawer, SerializedProperty property)
@@ -44,7 +92,7 @@ namespace llagache.Editor
             }
         }
         
-        [MenuItem("Window/Open Persistent Data Path")]
+        [MenuItem("Tools/QOL/Open Persistent Data Path")]
         static void OpenPersistentDataPath()
         {
             EditorUtility.RevealInFinder(Application.persistentDataPath);
