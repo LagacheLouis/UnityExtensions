@@ -40,7 +40,6 @@ namespace llagache.Editor
         {
             var obj = Selection.activeObject;
             var path = AssetDatabase.GetAssetPath(obj);
-            Debug.Log(path);
             if(string.IsNullOrEmpty(path)) return;
             var dir = Directory.Exists(path) ? path : Path.GetDirectoryName(path);
             OpenTerminalFunc(dir);
