@@ -7,13 +7,13 @@ using System.Reflection;
 using UnityEditorInternal;
 using UnityEditor;
 
-namespace Shaker
+namespace llagache.Editor
 {
     public static class EditorHelpers
     {
         public static void OpenLockInspector(Object target)
         {
-            var inspectorType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
+            var inspectorType = typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.InspectorWindow");
             var inspectorInstance = ScriptableObject.CreateInstance(inspectorType) as EditorWindow;
             inspectorInstance.Show();
             var prevSelection = Selection.activeGameObject;
@@ -59,6 +59,15 @@ namespace Shaker
 
             Debug.Log("Asset created");
             return asset;
+        }
+        
+        public static void Row(ref Rect rect, ref float y, float x, float width, int columns, int columnIndex)
+        {
+            float spacing = 10;
+            var w = width / columns + spacing * 0.5f / columns;
+            var rx = x + w * columnIndex;
+            rect.Set(rx, y, w - spacing * 0.5f, EditorGUIUtility.singleLineHeight);
+            if(columnIndex >= columns - 1) y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         }
     }
 }

@@ -91,7 +91,7 @@ namespace llagache.Editor
             }
         }
         
-        [MenuItem("Tools/QOL/Open Persistent Data Path")]
+        [MenuItem("Tools/QoL/Open Persistent Data Path")]
         static void OpenPersistentDataPath()
         {
             EditorUtility.RevealInFinder(Application.persistentDataPath);
