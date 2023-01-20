@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using UnityEngine;
 using System.Reflection;
 using UnityEditorInternal;
 using UnityEditor;
+using Object = UnityEngine.Object;
 
 namespace llagache.Editor
 {
@@ -69,6 +71,31 @@ namespace llagache.Editor
             rect.Set(rx, y, w - spacing * 0.5f, EditorGUIUtility.singleLineHeight);
             if(columnIndex >= columns - 1) y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         }
+        
+        public static void ToggleGizmos(bool value, params int[] classIDs)
+        {
+            var annotation = Type.GetType("UnityEditor.Annotation, UnityEditor");
+            var classId = annotation.GetField("classID");
+            var scriptClass = annotation.GetField("scriptClass");
+         
+            var annotationUtility = Type.GetType("UnityEditor.AnnotationUtility, UnityEditor");
+            var getAnnotations = annotationUtility.GetMethod("GetAnnotations", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+            var setGizmoEnabled = annotationUtility.GetMethod("SetGizmoEnabled", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+            var setIconEnabled = annotationUtility.GetMethod("SetIconEnabled", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+         
+            var annotations = (Array)getAnnotations.Invoke(null, null);
+            foreach (var a in annotations)
+            {
+                var classIdValue = (int)classId.GetValue(a);
+                var scriptClassValue = (string)scriptClass.GetValue(a);
+                
+                if(classIDs.Length > 0 && !classIDs.Contains(classIdValue)) continue;
+         
+                setGizmoEnabled.Invoke(null, new object[] { classIdValue, scriptClassValue, value ? 1 : 0, false });
+                setIconEnabled.Invoke(null, new object[] { classIdValue, scriptClassValue, value ? 1 : 0 });
+            }
+        }
+        
     }
 }
 
