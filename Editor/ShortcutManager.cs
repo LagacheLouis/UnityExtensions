@@ -97,12 +97,12 @@ namespace llagache.Editor
                 switch (e.type)
                 {
                     case EventType.KeyDown when e.keyCode == keyCode:
-                        // e.Use();
+                         e.Use();
                         _onKeyDown = true;
                         _onKey = true;
                         break;
                     case EventType.KeyUp when e.keyCode == keyCode:
-                        //e.Use();
+                        e.Use();
                         _onKeyUp = true;
                         _onKey = false;
                         break;

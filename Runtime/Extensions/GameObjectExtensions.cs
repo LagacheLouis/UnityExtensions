@@ -20,6 +20,13 @@ namespace llagache
             return gameObject.GetComponent<T>() != null;
         }
         
+        public static void RemoveComponent<T>(this GameObject gameObject) where T : Component
+        {
+            T component = gameObject.GetComponent<T>();
+            if (component != null)
+               GameObject.DestroyImmediate(component);
+        }
+        
         public static bool Contains(this LayerMask mask, int layer)
         {
             return mask == (mask | (1 << layer));
