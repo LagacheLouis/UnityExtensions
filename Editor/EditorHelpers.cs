@@ -126,7 +126,7 @@ namespace llagache.Editor
  
             return layerMask;
         }
-        
+
     }
 }
 
