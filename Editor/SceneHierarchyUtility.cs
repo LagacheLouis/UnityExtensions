@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace llagache.Editor
                 .GetType()
                 .GetMethod("GetExpandedGameObjects");
 
-            object result = methodInfo.Invoke(sceneHierarchy, new object[0]);
+            object result = methodInfo.Invoke(sceneHierarchy, Array.Empty<object>());
 
             return (List<GameObject>)result;
         }
@@ -63,23 +64,26 @@ namespace llagache.Editor
             methodInfo.Invoke(sceneHierarchy, new object[] { go.GetInstanceID(), expand });
         }
 
+
+
         private static object GetSceneHierarchy()
         {
             EditorWindow window = GetHierarchyWindow();
-
-            object sceneHierarchy = typeof(EditorWindow).Assembly
+            var sceneHierarchy = typeof(EditorWindow).Assembly
                 .GetType("UnityEditor.SceneHierarchyWindow")
                 .GetProperty("sceneHierarchy")
                 .GetValue(window);
-
             return sceneHierarchy;
         }
 
+        private static EditorWindow _hierarchy = null;
         private static EditorWindow GetHierarchyWindow()
         {
+            if (_hierarchy) return _hierarchy;
             // For it to open, so that it the current focused window.
             EditorApplication.ExecuteMenuItem("Window/General/Hierarchy");
-            return EditorWindow.focusedWindow;
+            _hierarchy = EditorWindow.focusedWindow;
+            return _hierarchy;
         }
     }
 }
