@@ -36,5 +36,14 @@ namespace llagache
         {
             return f - Mathf.Floor(f);
         }
+
+        public static bool Loop(ref float t, float increment, float min, float max)
+        {
+            t += increment;
+            var loop = t < min || t >= max;
+            t = ((t - min) % (max - min) + (max - min)) % (max - min) + min;
+          
+            return loop;
+        }
     }
 }
