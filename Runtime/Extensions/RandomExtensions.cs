@@ -44,15 +44,25 @@ namespace llagache
             return item;
         }
 
-        public static void RandomResetState()
+        public static void RandomizeState()
         {
             Random.InitState(System.Environment.TickCount);
         }
 
-        public static float RandomWeightedRange(float min, float max, AnimationCurve weight)
+        public static float WeightedRange(float min, float max, AnimationCurve weight)
         {
             float t = Random.value;
             return weight.Evaluate(t) * (max - min) + min;
+        }
+
+        public static string String(string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+        {
+            var concat = new char[12];
+            for (int i = 0; i < concat.Length; i++)
+            {
+                concat[i] = characters[Random.Range(0,characters.Length-1)];
+            }
+            return new string(concat);
         }
 
     }

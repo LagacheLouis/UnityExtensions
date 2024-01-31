@@ -2,12 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Shaker
+namespace llagache
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
-        public static T Inst { get { return _instance; } }
+
+        public static T Inst
+        {
+            get
+            {
+                if(_instance) return _instance;
+                _instance = FindObjectOfType<T>();
+                return _instance;
+            }
+        }
+
         [SerializeField]
         private bool _dontDestroyOnLoad;
 
