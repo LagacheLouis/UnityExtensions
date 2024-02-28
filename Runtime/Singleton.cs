@@ -13,24 +13,21 @@ namespace llagache
             get
             {
                 if(_instance) return _instance;
-                _instance = FindObjectOfType<T>();
+                _instance = FindFirstObjectByType<T>();
                 return _instance;
             }
         }
-
-        [SerializeField]
-        private bool _dontDestroyOnLoad;
-
+        
         protected virtual void Awake()
         {
             if (_instance != null && _instance != this)
             {
+                this.gameObject.SetActive(false);
                 Destroy(this.gameObject);
             }
             else
             {
                 _instance = this.GetComponent<T>();
-                if(_dontDestroyOnLoad) DontDestroyOnLoad(this);
             }
         }
     }
